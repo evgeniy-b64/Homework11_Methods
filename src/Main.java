@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         task1();
@@ -12,12 +15,14 @@ public class Main {
         System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     }
 
+    // ====================================================================================================================
+
     public static boolean checkLeapYear(int year) {                         // проверка года на високосность
         return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
     }
 
     public static void printLeapYear(int year) {                              // вывод сообщения
-        if (checkLeapYear(year) == true) {
+        if (checkLeapYear(year)) {
             System.out.println(year + " год является високосным");
         } else {
             System.out.println(year + " год не является високосным");
@@ -30,26 +35,50 @@ public class Main {
         printLeapYear(yearToCheck);
     }
 
-    public static String checkOS(int clientOS, int clientDeviceYear) {                         // проверка операционной системы
-        if ((clientOS == 0) && (clientDeviceYear < 2015))
-            return ("Установите облегченную версию приложения для iOS по ссылке");
-        else if ((clientOS == 0) && (clientDeviceYear >= 2015)) {
-            return ("Установите версию приложения для iOS по ссылке");
+    // ====================================================================================================================
+
+    public static String inputOS() {    // пользователь выбирает ОС
+        System.out.println("Выберите вашу операционную систему: 1 — iOS, 2 — Android");
+        Scanner scanner = new Scanner(System.in);
+        if (scanner.hasNextInt()) {
+            int userOS = scanner.nextInt();
+            switch (userOS) {
+                case 1:
+                    return "iOS";
+                case 2:
+                    return "Android";
+            }
         }
-        if ((clientOS == 1) && (clientDeviceYear < 2015)) {
-            return ("Установите облегченную версию приложения для Android по ссылке");
-        } else if ((clientOS == 1) && (clientDeviceYear >= 2015))
-            return ("Установите версию приложения для Android по ссылке");
-        else {
-            return ("Ваша ОС не поддерживается");
-        }
+        return "404";
+    }
+
+    public static int inputYear() { // пользователь задаёт года выпуска телефона
+        System.out.println("Введите года выпуска телефона");
+        Scanner scanner = new Scanner(System.in);
+        if (scanner.hasNextInt()) {
+            return scanner.nextInt();
+        } else return LocalDate.now().getYear();
+    }
+
+    public static String checkOSVersion(int clientDeviceYear) { // выбираем версию приложения
+        int currentYear = LocalDate.now().getYear();
+        if (clientDeviceYear <= currentYear)
+            return " облегченную";
+        else return "";
     }
 
     public static void task2() {
         taskHeader(2, "Операционная система");
-        System.out.println(checkOS(1, 2012)); // 0 — iOS, 1 — Android, 2 - другая ОС
+        String osType = inputOS();
+        if (osType.equals("404")) {
+            System.out.println("Ваша ОС не поддерживается");
+        } else {
+            String versionType = checkOSVersion(inputYear());
+            System.out.printf("Установите%s версию приложения для %s по ссылке \n", versionType, osType);
+        }
     }
 
+    // ====================================================================================================================
     public static byte checkDeliveryTime(int deliveryDistance) {  // вычисление времени доставки
         if (deliveryDistance < 20) {
             return 1;
@@ -64,9 +93,9 @@ public class Main {
     public static void task3() {
         taskHeader(3, "Delivery club");
         int distance = (int) (Math.random() * 121); // задаём расстояние доставки как случайное число от 0 до 120
-        System.out.println("Delivery distance is " +distance+ " kilometers.");
+        System.out.println("Delivery distance is " + distance + " kilometers.");
         byte deliveryTime = checkDeliveryTime(distance);
-        if (deliveryTime >= 0) System.out.println("Estimated delivery time is " + deliveryTime+ " days.");
+        if (deliveryTime >= 0) System.out.println("Estimated delivery time is " + deliveryTime + " days.");
         else {
             System.out.println("Delivery is not available.");
         }
