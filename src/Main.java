@@ -52,8 +52,8 @@ public class Main {
         return "404";
     }
 
-    public static int inputYear() { // пользователь задаёт года выпуска телефона
-        System.out.println("Введите года выпуска телефона");
+    public static int inputYear() { // пользователь задаёт год выпуска телефона
+        System.out.println("Введите год выпуска телефона");
         Scanner scanner = new Scanner(System.in);
         if (scanner.hasNextInt()) {
             return scanner.nextInt();
@@ -62,7 +62,7 @@ public class Main {
 
     public static String checkOSVersion(int clientDeviceYear) { // выбираем версию приложения
         int currentYear = LocalDate.now().getYear();
-        if (clientDeviceYear <= currentYear)
+        if (clientDeviceYear < currentYear)
             return " облегченную";
         else return "";
     }
